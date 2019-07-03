@@ -1,3 +1,5 @@
+package Operand;
+
 /**
  *              ax^n,
  * 
@@ -6,7 +8,7 @@
  *          x is variable,
  *          n is exponent.
  */
-class Operand {
+public class Operand {
     private double coefficient;
     private int exponent;
 
