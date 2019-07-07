@@ -22,48 +22,57 @@ public class Operand {
         this.exponent = exponent;
     }
 
+    public void copy(Operand A) {
+        this.coefficient = A.coefficient;
+        this.exponent = A.exponent;
+    }
+
     public void printOperand() {
         // ax^n, (-infinity < a < +infinity, -infinity < n < +infinity)
         if (coefficient != 0 && exponent != 0) {
-            // x^n
-            if (coefficient == 1 && exponent != 0)
+            // ax, (-infinity < a < +infinity)
+            if (coefficient != 0 && exponent == 1) {
+                if (Math.abs(coefficient - (int) coefficient) > 0)
+                    System.out.print("(" + coefficient + ")" + "x");
+                else
+                    System.out.print((int) coefficient + "x");
+
+                // x
+                if (coefficient == 1 && exponent == 1)
+                    System.out.print("x");
+            }
+
+            // x^n, (0 < n < +infinity)
+            if (coefficient == 1 && exponent > 0)
                 System.out.print("x^" + exponent);
             
-            // ax^n
-            else {
-                if (coefficient - (int) coefficient != 0)
+            // ax^n, (-infinity < a < +infinity, 0 < n < +infinity)
+            if (coefficient != 0 && exponent > 1) {
+                if (Math.abs(coefficient - (int) coefficient) > 0)
                     System.out.print("(" + coefficient + ")");
                 else
-                    System.out.print((int)coefficient);
+                    System.out.print((int) coefficient);
 
                 System.out.print("x^");
 
                 System.out.print(exponent);
             }
-        }
-                    
-        // ax, (-infinity < a < +infinity)
-        if (coefficient != 0 && exponent == 1) {
-            if (coefficient - (int) coefficient != 0)
-                System.out.print("(" + coefficient + ")" + "x");
-            else 
-                System.out.print((int)coefficient + "x");
-
-            // x
-            if (coefficient == 1 && exponent == 1)
-                System.out.print("x");
+            
         }
         
         // a, (-infinity < a < +infinity)
         if (coefficient != 0 && exponent == 0) {
-            if (coefficient - (int) coefficient != 0)
+            if (Math.abs(coefficient - (int) coefficient) > 0)
                 System.out.print(coefficient);
             else
                 System.out.print((int)coefficient);
         }
 
-        if (coefficient == 0)
-            System.out.print("0");
+        // 0
+        if (coefficient == 0) {
+            System.out.print("0");    
+        }
+            
     }
 
     public double getCoefficient() {
