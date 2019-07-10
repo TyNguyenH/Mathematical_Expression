@@ -36,10 +36,51 @@ class Test {
         return expression;
     }
 
-    // public LinkedList<Operand> simplifyExpression(LinkedList<Operand>
-    // rawExpression) {
+    public static LinkedList<Operand> simplifyExpression(LinkedList<Operand> rawExpression) {
+        LinkedList<Operand> standardizedExpression = standardizeExpression(rawExpression),
+                            simplifiedExpression = new LinkedList<Operand> ();
 
-    // }
+        int currentExponent;
+        double currentCoefficient;
+        int lengthOfStandardizedExpression = standardizedExpression.size();
+
+        /*
+         * working properly legacy code
+         */
+        // int i = 0;
+        // while (currentExponent >= 0) {
+        //     i = 0;
+        //     currentCoefficient = 0;
+        //     while (i < lengthOfStandardizedExpression) {
+        //         if (currentExponent == standardizedExpression.get(i).getExponent()) {
+        //             currentCoefficient += standardizedExpression.get(i).getCoefficient();
+        //         }
+        //         i++;
+        //     }
+        //     simplifiedExpression.add(new Operand(currentCoefficient, currentExponent));
+        //     currentExponent--;
+        // }
+
+        /*
+         *  testing new code   
+         */
+        int i = 0;
+        while (i < lengthOfStandardizedExpression) {
+            currentCoefficient = 0;
+            currentExponent = standardizedExpression.get(i).getExponent();
+            while (currentExponent == standardizedExpression.get(i).getExponent()) {
+                currentCoefficient += standardizedExpression.get(i).getCoefficient();
+                i++;
+                
+                // this line is meant to stop i from getting larger than the size of standardizedExpression
+                if (i == lengthOfStandardizedExpression)
+                    break;
+            }
+            simplifiedExpression.add(new Operand(currentCoefficient, currentExponent));
+        } 
+
+        return simplifiedExpression;
+    }
 
     public static void main(String[] args) {
         System.out.print(".------------------------------." + "\n"
@@ -50,14 +91,14 @@ class Test {
         
         arrayOfOperands[0] = new Operand(1.1, 2);
         arrayOfOperands[1] = new Operand(3, 1);
-        arrayOfOperands[2] = new Operand(5.6, 6);
+        arrayOfOperands[2] = new Operand(5.6, 1);
         arrayOfOperands[3] = new Operand(6, 3);
-        arrayOfOperands[4] = new Operand(-7.9, 4);
-        arrayOfOperands[5] = new Operand(2, 5);
-        arrayOfOperands[6] = new Operand(4.2, 8);
-        arrayOfOperands[7] = new Operand(0, 7);
-        arrayOfOperands[8] = new Operand(-9, 10);
-        arrayOfOperands[9] = new Operand(0.9, 9);
+        arrayOfOperands[4] = new Operand(-7.9, 3);
+        arrayOfOperands[5] = new Operand(2, 2);
+        arrayOfOperands[6] = new Operand(4.2, 4);
+        arrayOfOperands[7] = new Operand(0, 1);
+        arrayOfOperands[8] = new Operand(-9, 5);
+        arrayOfOperands[9] = new Operand(0.9, 5);
         
         LinkedList<Operand> expression = new LinkedList<Operand> ();
         for (int i = 0; i < 10; i++) {
@@ -72,6 +113,13 @@ class Test {
 
         expression = standardizeExpression(expression);
         System.out.print("\n" + "After sorting: ");
+        for (int i = 0; i < expression.size(); i++) {
+            expression.get(i).printOperand();
+            System.out.print(", ");
+        }
+
+        expression = simplifyExpression(expression);
+        System.out.print("\n" + "After simplifying: ");
         for (int i = 0; i < expression.size(); i++) {
             expression.get(i).printOperand();
             System.out.print(", ");

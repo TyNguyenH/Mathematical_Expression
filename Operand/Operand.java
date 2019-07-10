@@ -1,5 +1,7 @@
 package Operand;
 
+import java.text.DecimalFormat;
+
 /**
  *              ax^n,
  * 
@@ -28,12 +30,14 @@ public class Operand {
     }
 
     public void printOperand() {
+        DecimalFormat formatedCoefficient = new DecimalFormat("0.###");
+        
         // ax^n, (-infinity < a < +infinity, -infinity < n < +infinity)
         if (coefficient != 0 && exponent != 0) {
             // ax, (-infinity < a < +infinity)
             if (coefficient != 0 && exponent == 1) {
                 if (Math.abs(coefficient - (int) coefficient) > 0)
-                    System.out.print("(" + coefficient + ")" + "x");
+                    System.out.print("(" + formatedCoefficient.format(coefficient) + ")" + "x");
                 else
                     System.out.print((int) coefficient + "x");
 
@@ -49,7 +53,7 @@ public class Operand {
             // ax^n, (-infinity < a < +infinity, 0 < n < +infinity)
             if (coefficient != 0 && exponent > 1) {
                 if (Math.abs(coefficient - (int) coefficient) > 0)
-                    System.out.print("(" + coefficient + ")");
+                    System.out.print("(" + formatedCoefficient.format(coefficient) + ")");
                 else
                     System.out.print((int) coefficient);
 
@@ -63,7 +67,7 @@ public class Operand {
         // a, (-infinity < a < +infinity)
         if (coefficient != 0 && exponent == 0) {
             if (Math.abs(coefficient - (int) coefficient) > 0)
-                System.out.print(coefficient);
+                System.out.print("(" + formatedCoefficient.format(coefficient) + ")");
             else
                 System.out.print((int)coefficient);
         }
@@ -72,14 +76,13 @@ public class Operand {
         if (coefficient == 0) {
             System.out.print("0");    
         }
-            
     }
 
     public double getCoefficient() {
         return coefficient;
     }
 
-    public double getExponent() {
+    public int getExponent() {
         return exponent;
     }
 }
