@@ -1,2 +1,2 @@
 # Mathematical_Expression
-Implementing linked list to create a mathematical expression
+Implement linked list to create a mathematical expression

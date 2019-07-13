@@ -1,8 +1,4 @@
-package Operand;
-
-import java.text.DecimalFormat;
-
-/**
+/*
  *              ax^n,
  * 
  *      where
@@ -10,6 +6,11 @@ import java.text.DecimalFormat;
  *          x is variable,
  *          n is exponent.
  */
+
+package MathematicalExpression;
+
+import java.text.DecimalFormat;
+
 public class Operand {
     private double coefficient;
     private int exponent;
@@ -24,11 +25,13 @@ public class Operand {
         this.exponent = exponent;
     }
 
+    // copy data from operand A to current instance of operand
     public void copy(Operand A) {
         this.coefficient = A.coefficient;
         this.exponent = A.exponent;
     }
 
+    // print operand in the form of ax^n
     public void printOperand() {
         DecimalFormat formatedCoefficient = new DecimalFormat("0.###");
         
