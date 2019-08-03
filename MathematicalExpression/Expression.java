@@ -1,11 +1,11 @@
 /*
  *      An expression consists of two or more operands.
- * 
+ *
  *  What this expression class can do:
  *  1. Identify operands (coefficient and exponent) from an expression.
  *  2. Standardize and simplify expression.
  *  3. Calculate value of x.
- */ 
+ */
 
 package MathematicalExpression;
 
@@ -25,20 +25,18 @@ public class Expression{
         size = expression.size;
     }
 
-    // copy data from newExpression to current instance of expression
     public void copy(Expression newExpression) {
         listOfOperands = newExpression.listOfOperands;
         size = newExpression.size;
     }
 
-    // add a new operand A to expression
     public void addOperand(Operand A) {
         listOfOperands.add(A);
         size = listOfOperands.size();
     }
 
-    // print all operands
-    public void printOperands() { 
+    // print only all operands
+    public void printOperands() {
         for (int i = 0; i < size; i++) {
             if (i < size - 1) {
                 listOfOperands.get(i).printOperand();
@@ -52,8 +50,12 @@ public class Expression{
     // print all operands in the form of mathematical expression
     public void printExpression() {
         Operand temp = new Operand();
-        
+
+        // print first operand
         listOfOperands.get(0).printOperand();
+        System.out.print(" ");
+        
+        // print from second operand
         for (int i = 1; i < size; i++) {
             if (listOfOperands.get(i).getCoefficient() > 0) {
                 System.out.print("+ ");
@@ -64,9 +66,9 @@ public class Expression{
             } else {
                 double currentCoefficient = Math.abs(listOfOperands.get(i).getCoefficient());
                 int currentExponent = listOfOperands.get(i).getExponent();
-                
+
                 temp.copy(new Operand(currentCoefficient, currentExponent));
-                
+
                 System.out.print("- ");
                 temp.printOperand();
                 System.out.print(" ");
