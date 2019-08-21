@@ -11,7 +11,7 @@ package MathematicalExpression;
 
 import java.util.LinkedList;
 
-public class Expression{
+public class Expression {
     private LinkedList<Operand> listOfOperands;
     private int size;
 
@@ -28,6 +28,49 @@ public class Expression{
     public void copy(Expression newExpression) {
         listOfOperands = newExpression.listOfOperands;
         size = newExpression.size;
+    }
+
+    public static Expression parseExpression(String inputString) {
+        // remove unnecessary spaces
+        inputString = inputString.replace(" ", "");
+        
+        // get all operators in inputString
+        LinkedList<String> operators = new LinkedList<String> ();
+        for (int i = 0; i < inputString.length(); i++) {
+            if (inputString.charAt(i) == '+' || inputString.charAt(i) == '-') {
+                operators.add(String.valueOf(inputString.charAt(i)));
+            }
+        }
+    
+        // replace all operators with spaces
+        inputString = inputString.replace("-", " ");
+        inputString = inputString.replace("+", " ");
+
+        inputString = inputString.trim();
+
+        // get all operands in inputString after it has been proccessed
+        String operands[] = inputString.split(" ");
+       
+        // concatenate operators in front of operands
+        if (operands.length == operators.size()) {
+            for (int i = 0; i < operands.length; i++) {
+                operands[i] = operators.get(i) + operands[i];
+            }
+        } else {
+            if (operands.length > operators.size()) {
+                for (int i = 0; i < operators.size(); i++) {
+                    operands[i + 1] = operators.get(i) + operands[i + 1];
+                }   
+            }
+        }
+      
+        // create new expression
+        Expression expression = new Expression();
+        for (int i = 0; i < operands.length; i++) {
+            expression.addOperand(Operand.parseOperand(operands[i]));
+        }
+
+        return expression;
     }
 
     public void addOperand(Operand A) {
@@ -78,30 +121,32 @@ public class Expression{
 
     // sort all operands in expression decreasingly by operands' exponents
     public static Expression standardizeExpression(Expression expression) {
-        Operand buffer = new Operand();
+        Operand temp = new Operand();
+
+        int sizeOfExpression = expression.size;
 
         // first scan to find operands have coefficient larger than 0
-        for (int i = 0; i < expression.size - 1; i++) {
-            for (int k = i + 1; k < expression.size; k++) {
+        for (int i = 0; i < sizeOfExpression - 1; i++) {
+            for (int k = i + 1; k < sizeOfExpression; k++) {
                 // if 2 operands have exponents larger than 0
                 if (expression.listOfOperands.get(k).getExponent() > expression.listOfOperands.get(i).getExponent()) {
-                    // this is just a swapping action between 2 operands in a linked list expression
-                    buffer.copy(expression.listOfOperands.get(i));
+                    // this is just a swapping data action between 2 operands in a linked list expression
+                    temp.copy(expression.listOfOperands.get(i));
                     expression.listOfOperands.get(i).copy(expression.listOfOperands.get(k));
-                    expression.listOfOperands.get(k).copy(buffer);
+                    expression.listOfOperands.get(k).copy(temp);
                 }
             }
         }
 
         // second scan to find operands have coefficient equal to 0
-        for (int i = 0; i < expression.size - 1; i++) {
-            for (int k = i + 1; k < expression.size; k++) {
+        for (int i = 0; i < sizeOfExpression - 1; i++) {
+            for (int k = i + 1; k < sizeOfExpression; k++) {
                 // if 1 of the operands has the coefficient equal to 0
                 if (expression.listOfOperands.get(i).getCoefficient() == 0 && expression.listOfOperands.get(k).getCoefficient() > 0) {
-                    // this is just a swapping action between 2 operands in a linked list expression
-                    buffer.copy(expression.listOfOperands.get(i));
+                    // this is just a swapping data action between 2 operands in a linked list expression
+                    temp.copy(expression.listOfOperands.get(i));
                     expression.listOfOperands.get(i).copy(expression.listOfOperands.get(k));
-                    expression.listOfOperands.get(k).copy(buffer);
+                    expression.listOfOperands.get(k).copy(temp);
                 }
             }
         }
@@ -111,27 +156,29 @@ public class Expression{
 
     // simplify standardized expression and return simplified expression
     public static Expression simplifyExpression(Expression rawExpression) {
-        Expression standardizedExpression = standardizeExpression(rawExpression),
-                   simplifiedExpression = new Expression();
+        Expression standardizedExpression = standardizeExpression(rawExpression);
+        Expression simplifiedExpression = new Expression();
 
-        int currentExponent;
         double currentCoefficient;
+        int currentExponent;
 
         int i = 0;
         while (i < standardizedExpression.size) {
             currentCoefficient = 0;
             currentExponent = standardizedExpression.listOfOperands.get(i).getExponent();
-            while (currentExponent == standardizedExpression.listOfOperands.get(i).getExponent()) {
+            
+            while (i < standardizedExpression.size && currentExponent == standardizedExpression.listOfOperands.get(i).getExponent()) {
                 currentCoefficient += standardizedExpression.listOfOperands.get(i).getCoefficient();
                 i++;
-
-                // this line is meant to stop variable i from getting larger than the size of standardizedExpression
-                if (i == standardizedExpression.size)
-                    break;
             }
+            
             simplifiedExpression.addOperand(new Operand(currentCoefficient, currentExponent));
         }
 
         return simplifiedExpression;
+    }
+
+    public LinkedList<Operand> getListOfOperands() {
+        return listOfOperands;
     }
 }
