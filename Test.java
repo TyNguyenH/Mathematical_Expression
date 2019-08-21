@@ -1,4 +1,5 @@
 import MathematicalExpression.*;
+import java.util.Scanner;
 
 class Test {
     // generate random operand, (-100 < coefficient < 100 && 0 <= exponent < 10)
@@ -16,26 +17,17 @@ class Test {
                     +    "|                          a, b, c, ... are real numbers |" + "\n"
                     +    "|                          m, n, p, ... are integers     |" + "\n"
                     +    "'--------------------------------------------------------'" + "\n");
+
+        Scanner keyboard = new Scanner(System.in);
         
-        Operand arrayOfOperands[] = new Operand[10];
+        // System.out.print(">>> ");
+        // 1.1x^2 + 3x + 5.6x +6x^3 -7.9x^3 + 2x^2
+        // String expressionInString = keyboard.nextLine();
         
-        arrayOfOperands[0] = Operand.parseOperand("1.1x^2");
-        arrayOfOperands[1] = Operand.parseOperand("3x");
-        arrayOfOperands[2] = Operand.parseOperand("5.6x");
-        arrayOfOperands[3] = Operand.parseOperand("6x^3");
-        arrayOfOperands[4] = Operand.parseOperand("-7.9x^3");
-        arrayOfOperands[5] = Operand.parseOperand("2x^2");
-        arrayOfOperands[6] = Operand.parseOperand("4.2x^4");
-        arrayOfOperands[7] = Operand.parseOperand("0x");
-        arrayOfOperands[8] = Operand.parseOperand("-9x^5");
-        arrayOfOperands[9] = Operand.parseOperand("0.9x^5");
+        Expression expression = Expression.parseExpression(" 1.1x^2 +  3x^1 +  5.6x^0 +  6x^3 -  7.9x^3 +   2x^2  +4.2x^4 + 0x-9x^5+   0.9x^5  ");
+        // Expression expression = Expression.parseExpression(expressionInString);
         
-        Expression expression = new Expression();
-        for (int i = 0; i < 10; i++) {
-            expression.addOperand(arrayOfOperands[i]);
-        }
-        
-        System.out.print("\n" + "Original input: ");
+        System.out.print("\n" + "Processed input: ");
         expression.printExpression();
     
         Expression standardizedExpression = new Expression(Expression.standardizeExpression(expression));
@@ -52,5 +44,7 @@ class Test {
         //     operand.printOperand();
         //     System.out.println();
         // }
+
+        keyboard.close();
     }
 }
