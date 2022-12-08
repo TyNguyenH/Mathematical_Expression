@@ -1,4 +1,4 @@
-# Mathematical_Expression
+# Mathematical Expression
 Implementing linked list to create a mathematical expression
 
 This is a school project from my second year in college. <br/>
